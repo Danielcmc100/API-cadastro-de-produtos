@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"name": "eureka-server",
+			"path": "eureka-server"
+		},
+		{
+			"name": "zuul-server",
+			"path": "zuul-server"
+		},
+		{
+			"name": "config-server",
+			"path": "config-server"
+		},
+		{
+			"name": "cadastro-produtos-ms",
+			"path": "cadastro-produtos-ms"
+		},
+		{
+			"name": "venda-produtos-ms",
+			"path": "venda-produtos-ms"
+		},
+		{
+			"name": "config",
+			"path": "config"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "automatic"
+	}
+}
