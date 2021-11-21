@@ -77,4 +77,13 @@ public class ProdutoController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/codgo/{codgo}")
+    private ResponseEntity<String> obterIdPorCodgo(@PathVariable String codgo){
+        Optional<ProdutoDto> optional = service.obterProdutoPorCodgo(codgo);
+        if(optional.isPresent()){
+            return new ResponseEntity<>(optional.get().getId(),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

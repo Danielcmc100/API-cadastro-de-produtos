@@ -17,6 +17,8 @@ public interface CadastroFeignClient {
     Optional<Produto> ObterProdutoPorCodgo(@PathVariable String codgo);
     @PutMapping(path = "/api/produtos/{id}")
     Optional<Produto> RetirarEstoque(@PathVariable String id, @RequestBody Produto produto);
+    @GetMapping(path = "/api/produtos/codgo/{id}")
+    Optional<String> ObterIdPorCodgo(@PathVariable String id);
 }
 
 @Component
@@ -27,6 +29,10 @@ class CadastroFeignClientFallback implements CadastroFeignClient{
     }
     @Override
     public Optional<Produto> RetirarEstoque(@PathVariable String id, @RequestBody Produto produto){
+        return Optional.empty();
+    }
+    @Override
+    public Optional<String> ObterIdPorCodgo(String id) {
         return Optional.empty();
     }
 }

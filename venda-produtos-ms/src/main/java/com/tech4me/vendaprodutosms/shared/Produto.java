@@ -1,18 +1,11 @@
 package com.tech4me.vendaprodutosms.shared;
 
 public class Produto {
-    private String id;
     private String nome;
     private String codgo;
     private int preco;
     private int quantidade;
 
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
     public String getNome() {
         return nome;
     }

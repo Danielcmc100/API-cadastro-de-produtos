@@ -1,5 +1,7 @@
 package com.tech4me.vendaprodutosms.model;
 
+import com.tech4me.vendaprodutosms.shared.Produto;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Venda {
     @Id
     private String id;
-    private String produto;
+    private Produto produto;
     private int quantidade;
     private String data;
     
@@ -17,10 +19,10 @@ public class Venda {
     public void setId(String id) {
         this.id = id;
     }
-    public String getProduto() {
+    public Produto getProduto() {
         return produto;
     }
-    public void setProduto(String produto) {
+    public void setProduto(Produto produto) {
         this.produto = produto;
     }
     public String getData() {

@@ -63,7 +63,7 @@ public class VendaController {
                 VendaResponse vendaResponse = mapper.map(vendaDto, VendaResponse.class);
                 //Remover quandtidade do estoque
                 produto.get().setQuantidade(produto.get().getQuantidade() - vendaRequest.getQuantidade());
-                cFeignClient.RetirarEstoque(produto.get().getId(),produto.get()); 
+                cFeignClient.RetirarEstoque(cFeignClient.ObterIdPorCodgo(produto.get().getCodgo()).get(),produto.get()); 
                 //Venda concluida
                 return new ResponseEntity<>(vendaResponse,HttpStatus.ACCEPTED);
             }
