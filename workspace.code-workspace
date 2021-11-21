@@ -1,16 +1,16 @@
 {
 	"folders": [
 		{
+			"name": "config-server",
+			"path": "config-server"
+		},
+		{
 			"name": "eureka-server",
 			"path": "eureka-server"
 		},
 		{
 			"name": "zuul-server",
 			"path": "zuul-server"
-		},
-		{
-			"name": "config-server",
-			"path": "config-server"
 		},
 		{
 			"name": "cadastro-produtos-ms",
@@ -23,6 +23,9 @@
 		{
 			"name": "config",
 			"path": "config"
+		},
+		{
+			"path": "..\\..\\..\\Documents\\Projetos\\Java\\curso-tech4me\\backend\\aula11\\eureka-server"
 		}
 	],
 	"settings": {

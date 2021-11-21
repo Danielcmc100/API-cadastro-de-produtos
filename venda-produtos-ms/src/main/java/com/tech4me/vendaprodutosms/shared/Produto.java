@@ -1,6 +1,6 @@
 package com.tech4me.vendaprodutosms.shared;
 
-public class ProdutoDto {
+public class Produto {
     private String id;
     private String nome;
     private String codgo;

@@ -1,11 +1,11 @@
 package com.tech4me.cadastroprodutosms.view.model;
 
 public class ProdutoResponse {
+    private String codgo;
     private String nome;
     private int preco;
     private int quantidade;
-    private String codgo;
-
+    
     public String getNome() {
         return nome;
     }

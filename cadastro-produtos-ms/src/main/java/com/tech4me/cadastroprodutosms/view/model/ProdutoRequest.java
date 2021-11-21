@@ -5,12 +5,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 
 public class ProdutoRequest {
-    @NotEmpty(message = "O nome do produto dever ser preenchido")
-    @NotBlank(message = "O nome não pode estar em branco")
-    private String nome;
     @NotEmpty(message = "O códgo do produto dever ser preenchido")
     @NotBlank(message = "O códgo não pode estar em branco")
     private String codgo;
+    @NotEmpty(message = "O nome do produto dever ser preenchido")
+    @NotBlank(message = "O nome não pode estar em branco")
+    private String nome;
     @Positive(message = "O preço dever ser maior que zero")
     private float preco;
     @Positive(message = "A quantidade dever ser maior que zero")

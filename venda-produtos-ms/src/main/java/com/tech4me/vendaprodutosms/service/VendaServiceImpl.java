@@ -29,7 +29,7 @@ public class VendaServiceImpl implements VendaService{
     }
 
     @Override
-    public VendaDto adicionarMuica(VendaDto vendaDto) {
+    public VendaDto adicionarVenda(VendaDto vendaDto) {
         Venda venda = mapper.map(vendaDto, Venda.class);
         venda = repository.save(venda);
         vendaDto = mapper.map(venda, vendaDto.getClass());

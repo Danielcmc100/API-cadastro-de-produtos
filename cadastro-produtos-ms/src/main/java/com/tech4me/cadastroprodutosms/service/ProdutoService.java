@@ -11,4 +11,5 @@ public interface ProdutoService {
     ProdutoDto adicionarMuica(ProdutoDto produtoDto);
     void removerProduto(String id);
     ProdutoDto alterarProduto(String id, ProdutoDto produtoDto);
+    Optional<ProdutoDto> obterProdutoPorCodgo(String codgo);
 }

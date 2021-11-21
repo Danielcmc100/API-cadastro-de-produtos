@@ -1,14 +1,16 @@
 package com.tech4me.vendaprodutosms.view.model;
 
+import com.tech4me.vendaprodutosms.shared.Produto;
+
 public class VendaResponse {
-    private String produto;
+    private Produto produto;
     private int quantidade;
     private String data;
 
-    public String getProduto() {
+    public Produto getProduto() {
         return produto;
     }
-    public void setProduto(String produto) {
+    public void setProduto(Produto produto) {
         this.produto = produto;
     }
     public int getQuantidade() {

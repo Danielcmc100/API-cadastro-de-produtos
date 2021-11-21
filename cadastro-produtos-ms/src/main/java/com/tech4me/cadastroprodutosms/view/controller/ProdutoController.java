@@ -1,6 +1,7 @@
 package com.tech4me.cadastroprodutosms.view.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -31,7 +32,8 @@ public class ProdutoController {
     private ProdutoService service;
 
     private ModelMapper mapper = new ModelMapper();
-
+    
+    //Listagem de produtos
     @GetMapping
     private ResponseEntity<List<ProdutoResponse>> obterTodos(){
         List<ProdutoDto> produtoDto = service.obterTodos();
@@ -42,16 +44,7 @@ public class ProdutoController {
         return new ResponseEntity<>(produtoResponses,HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    private ResponseEntity<List<ProdutoResponse>> obterPorId(@PathVariable String id){
-        List<ProdutoDto> produtoDto = service.obterTodos();
-        List<ProdutoResponse> produtoResponses = produtoDto.
-        stream().
-        map(m -> mapper.map(m, ProdutoResponse.class)).
-        collect(Collectors.toList());
-        return new ResponseEntity<>(produtoResponses,HttpStatus.OK);
-    }
-
+    //Incluir produto
     @PostMapping
     private ResponseEntity<ProdutoResponse> criarProduto(@RequestBody @Valid ProdutoRequest produtoRequest){
         ProdutoDto produtoDto = mapper.map(produtoRequest, ProdutoDto.class);
@@ -60,6 +53,7 @@ public class ProdutoController {
         return new ResponseEntity<>(produtoResponse,HttpStatus.ACCEPTED);
     }
 
+    //Consultar produto
     @DeleteMapping(value="/{id}")
     private ResponseEntity<String> removerProduto(@PathVariable String id){
         service.removerProduto(id);
@@ -74,5 +68,13 @@ public class ProdutoController {
         return new ResponseEntity<>(produtoResponse,HttpStatus.OK);
     }
     
-    
+    @GetMapping("/{id}")
+    private ResponseEntity<ProdutoResponse> obterPorCodgo(@PathVariable String id){
+        Optional<ProdutoDto> optional = service.obterProdutoPorCodgo(id);
+        if(optional.isPresent()){
+            ProdutoResponse retorno = mapper.map(optional.get(), ProdutoResponse.class);
+            return new ResponseEntity<>(retorno,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

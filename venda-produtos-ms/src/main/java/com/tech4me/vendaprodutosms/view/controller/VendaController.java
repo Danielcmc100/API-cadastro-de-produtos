@@ -1,13 +1,14 @@
 package com.tech4me.vendaprodutosms.view.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import com.tech4me.vendaprodutosms.HTTPClient.CadastroFeignClient;
 import com.tech4me.vendaprodutosms.service.VendaService;
-import com.tech4me.vendaprodutosms.shared.ProdutoDto;
+import com.tech4me.vendaprodutosms.shared.Produto;
 import com.tech4me.vendaprodutosms.shared.VendaDto;
 import com.tech4me.vendaprodutosms.view.model.VendaRequest;
 import com.tech4me.vendaprodutosms.view.model.VendaResponse;
@@ -36,7 +37,6 @@ public class VendaController {
 
     @Autowired
     private CadastroFeignClient cFeignClient;
-
     
     @GetMapping
     private ResponseEntity<List<VendaResponse>> obterTodos(){
@@ -48,18 +48,30 @@ public class VendaController {
         return new ResponseEntity<>(vendaResponses,HttpStatus.OK);
     }
 
-    @GetMapping("/teste")
-    private ResponseEntity<List<ProdutoDto>> obterProdutos(){
-        List<ProdutoDto> vendaResponses = cFeignClient.ObterProdutos();
-        return new ResponseEntity<>(vendaResponses,HttpStatus.OK);
-    }
-
+    //Realizar venda
     @PostMapping
     private ResponseEntity<VendaResponse> criarVenda(@RequestBody @Valid VendaRequest vendaRequest){
-        VendaDto vendaDto = mapper.map(vendaRequest, VendaDto.class);
-        vendaDto = service.adicionarMuica(vendaDto);
-        VendaResponse vendaResponse = mapper.map(vendaDto, VendaResponse.class);
-        return new ResponseEntity<>(vendaResponse,HttpStatus.ACCEPTED);
+        Optional<Produto> produto = cFeignClient.ObterProdutoPorCodgo(vendaRequest.getCodgoProduto());
+        //Verificar se o produto existe
+        if(produto.isPresent()){
+            //Verificar quantidade
+            if(produto.get().getQuantidade() - vendaRequest.getQuantidade() >= 0){
+                //Vender
+                VendaDto vendaDto = mapper.map(vendaRequest, VendaDto.class);
+                vendaDto.setProduto(produto.get());
+                vendaDto = service.adicionarVenda(vendaDto);
+                VendaResponse vendaResponse = mapper.map(vendaDto, VendaResponse.class);
+                //Remover quandtidade do estoque
+                produto.get().setQuantidade(produto.get().getQuantidade() - vendaRequest.getQuantidade());
+                cFeignClient.RetirarEstoque(produto.get().getId(),produto.get()); 
+                //Venda concluida
+                return new ResponseEntity<>(vendaResponse,HttpStatus.ACCEPTED);
+            }
+            //Quantidade "errada"
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        //Não encontrado
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping(value="/{id}")
@@ -71,7 +83,7 @@ public class VendaController {
     @PutMapping(value="/{id}")
     private ResponseEntity<VendaResponse> alterarVenda(@PathVariable String id, @RequestBody @Valid VendaRequest vendarRequest) {
         VendaDto vendaDto = mapper.map(vendarRequest, VendaDto.class);
-        vendaDto = service.adicionarMuica(vendaDto);
+        vendaDto = service.adicionarVenda(vendaDto);
         VendaResponse vendaResponse = mapper.map(vendaDto, VendaResponse.class);
         return new ResponseEntity<>(vendaResponse,HttpStatus.OK);
     }

@@ -45,7 +45,7 @@ public class ProdutoServiceImpl implements ProdutoService{
     @Override
     public ProdutoDto alterarProduto(String id, ProdutoDto produtoDto) {
         Produto produto = mapper.map(produtoDto, Produto.class);
-        produto.setId(id);
+        produto.setCodgo(id);
         repository.save(produto);
         produtoDto = mapper.map(produto, ProdutoDto.class);
         return produtoDto;
@@ -54,11 +54,20 @@ public class ProdutoServiceImpl implements ProdutoService{
     @Override
     public Optional<ProdutoDto> obterPorId(String id) {
         Optional<Produto> produto = repository.findById(id);
-        Optional<ProdutoDto> produtoDto
-        
-        return optional;
+        if(produto.isPresent()){
+            Optional<ProdutoDto> produtoDto = Optional.of(mapper.map(produto.get(), ProdutoDto.class));
+            return produtoDto;
+        }
+        return Optional.empty();
     }
 
-    
-    
+    @Override
+    public Optional<ProdutoDto> obterProdutoPorCodgo(String codgo) {
+        Produto produto = repository.findByCodgo(codgo).get(0);
+        if(produto != null){
+            ProdutoDto produtoDto = mapper.map(produto, ProdutoDto.class);
+            return Optional.of(produtoDto);
+        }
+        return Optional.empty();
+    }
 }
