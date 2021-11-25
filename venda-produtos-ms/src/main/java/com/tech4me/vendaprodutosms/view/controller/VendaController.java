@@ -52,19 +52,20 @@ public class VendaController {
     //Realizar venda
     @PostMapping
     private ResponseEntity<VendaResponse> criarVenda(@RequestBody @Valid VendaRequest vendaRequest){
-        Optional<Produto> produto = cFeignClient.ObterProdutoPorCodgo(vendaRequest.getCodgoProduto());
+        Optional<Produto> produtoOptional = cFeignClient.ObterProdutoPorCodgo(vendaRequest.getCodgoProduto());
         //Verificar se o produto existe
-        if(produto.isPresent()){
+        if(produtoOptional.isPresent()){
+            Produto produto = produtoOptional.get();
             //Verificar quantidade
-            if(produto.get().getQuantidade() - vendaRequest.getQuantidade() >= 0){
+            if(produto.getQuantidade() - vendaRequest.getQuantidade() >= 0){
                 //Vender
                 VendaDto vendaDto = mapper.map(vendaRequest, VendaDto.class);
-                vendaDto.setProduto(produto.get());
+                vendaDto.setProduto(produto);
                 vendaDto.setQuantidade(vendaRequest.getQuantidade());
                 vendaDto = service.adicionarVenda(vendaDto);
                 VendaResponse vendaResponse = mapper.map(vendaDto, VendaResponse.class);
                 //Remover quandtidade do estoque
-                cFeignClient.RetirarEstoque(cFeignClient.ObterIdPorCodgo(produto.get().getCodgo()).get(),produto.get()); 
+                cFeignClient.RetirarEstoque(cFeignClient.ObterIdPorCodgo(produto.getCodgo()).get(),produto); 
                 //Venda concluida
                 return new ResponseEntity<>(vendaResponse,HttpStatus.ACCEPTED);
             }
