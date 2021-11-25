@@ -63,8 +63,9 @@ public class ProdutoServiceImpl implements ProdutoService{
 
     @Override
     public Optional<ProdutoDto> obterProdutoPorCodgo(String codgo) {
-        Produto produto = repository.findByCodgo(codgo).get(0);
-        if(produto != null){
+        List<Produto> produtos = repository.findByCodgo(codgo);
+        if(produtos.size() > 0){
+            Produto produto = produtos.get(0);
             ProdutoDto produtoDto = mapper.map(produto, ProdutoDto.class);
             return Optional.of(produtoDto);
         }

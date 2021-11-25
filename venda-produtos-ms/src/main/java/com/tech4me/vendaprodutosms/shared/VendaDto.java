@@ -1,9 +1,13 @@
 package com.tech4me.vendaprodutosms.shared;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class VendaDto {
+    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private Produto produto;
     private int quantidade;
-    private String data;
+    private LocalDate data;
 
     public Produto getProduto() {
         return produto;
@@ -21,12 +25,15 @@ public class VendaDto {
         this.quantidade = quantidade;
     }
 
-    public String getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(String data) {
+    /* public void setData(String data) {
+        this.data = LocalDate.parse(data,formato);
+    } */
+
+    public void setData(LocalDate data) {
         this.data = data;
     }
-
 }

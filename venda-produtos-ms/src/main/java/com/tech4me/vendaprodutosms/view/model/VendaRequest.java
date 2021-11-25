@@ -1,5 +1,7 @@
 package com.tech4me.vendaprodutosms.view.model;
 
+import java.time.LocalDate;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -10,7 +12,7 @@ public class VendaRequest {
     @Min(1)
     private int quantidade;
     @NotNull(message = "A data não pode estar em branco")
-    private String data;
+    private LocalDate data;
     
     public String getCodgoProduto() {
         return codgoProduto;
@@ -24,11 +26,11 @@ public class VendaRequest {
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
-    public String getData() {
+    public LocalDate getData() {
         return data;
     }
-    public void setData(String data) {
-        this.data = data;
+    public void setData(LocalDate date) {
+        data = date; 
     }
 
     

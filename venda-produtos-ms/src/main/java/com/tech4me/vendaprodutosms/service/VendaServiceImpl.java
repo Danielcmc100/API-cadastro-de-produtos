@@ -1,5 +1,6 @@
 package com.tech4me.vendaprodutosms.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,11 +44,19 @@ public class VendaServiceImpl implements VendaService{
 
     @Override
     public VendaDto alterarVenda(String id, VendaDto vendaDto) {
+        
         Venda venda = mapper.map(vendaDto, Venda.class);
         venda.setId(id);
         repository.save(venda);
         vendaDto = mapper.map(venda, VendaDto.class);
         return vendaDto;
+    }
+
+    @Override
+    public List<VendaDto> vendasPorPeriodo(LocalDate data_inicial, LocalDate data_final) {
+        return repository.obterPorPeriodoData(data_inicial, data_final).stream()
+        .map(p -> mapper.map(p, VendaDto.class))
+        .collect(Collectors.toList());
     } 
     
 }

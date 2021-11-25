@@ -10,6 +10,7 @@ import com.tech4me.vendaprodutosms.HTTPClient.CadastroFeignClient;
 import com.tech4me.vendaprodutosms.service.VendaService;
 import com.tech4me.vendaprodutosms.shared.Produto;
 import com.tech4me.vendaprodutosms.shared.VendaDto;
+import com.tech4me.vendaprodutosms.view.model.DataRequest;
 import com.tech4me.vendaprodutosms.view.model.VendaRequest;
 import com.tech4me.vendaprodutosms.view.model.VendaResponse;
 
@@ -59,6 +60,7 @@ public class VendaController {
                 //Vender
                 VendaDto vendaDto = mapper.map(vendaRequest, VendaDto.class);
                 vendaDto.setProduto(produto.get());
+                vendaDto.setQuantidade(vendaRequest.getQuantidade());
                 vendaDto = service.adicionarVenda(vendaDto);
                 VendaResponse vendaResponse = mapper.map(vendaDto, VendaResponse.class);
                 //Remover quandtidade do estoque
@@ -81,12 +83,20 @@ public class VendaController {
     }
 
     @PutMapping(value="/{id}")
-    private ResponseEntity<VendaResponse> alterarVenda(@PathVariable String id, @RequestBody @Valid VendaRequest vendarRequest) {
+    private ResponseEntity<Optional<VendaResponse>> alterarVenda(@PathVariable String id, @RequestBody @Valid VendaRequest vendarRequest) {
         VendaDto vendaDto = mapper.map(vendarRequest, VendaDto.class);
-        vendaDto = service.adicionarVenda(vendaDto);
-        VendaResponse vendaResponse = mapper.map(vendaDto, VendaResponse.class);
+        vendaDto = service.alterarVenda(id, vendaDto);
+        Optional<VendaResponse> vendaResponse = Optional.of(mapper.map(vendaDto, VendaResponse.class));
         return new ResponseEntity<>(vendaResponse,HttpStatus.OK);
     }
-    
+
+    //Vendas por periodo detalhado
+    @GetMapping(value = "/data")
+    private ResponseEntity<List<VendaResponse>> vendasPorPeriodo(@RequestBody @Valid DataRequest data){
+        List<VendaResponse> vendas = service.vendasPorPeriodo(data.getData_inicial(), data.getData_final()).stream()
+        .map(p -> mapper.map(p, VendaResponse.class))
+        .collect(Collectors.toList());
+        return new ResponseEntity<>(vendas,HttpStatus.OK);
+    }
     
 }

@@ -61,29 +61,29 @@ public class ProdutoController {
     }
 
     @PutMapping(value="/{id}")
-    private ResponseEntity<ProdutoResponse> alterarProduto(@PathVariable String id, @RequestBody @Valid ProdutoRequest produtorRequest) {
+    private ResponseEntity<Optional<ProdutoResponse>> alterarProduto(@PathVariable String id, @RequestBody @Valid ProdutoRequest produtorRequest) {
         ProdutoDto produtoDto = mapper.map(produtorRequest, ProdutoDto.class);
-        produtoDto = service.adicionarMuica(produtoDto);
-        ProdutoResponse produtoResponse = mapper.map(produtoDto, ProdutoResponse.class);
+        produtoDto = service.alterarProduto(id,produtoDto);
+        Optional<ProdutoResponse> produtoResponse = Optional.of(mapper.map(produtoDto, ProdutoResponse.class));
         return new ResponseEntity<>(produtoResponse,HttpStatus.OK);
     }
     
     @GetMapping("/{id}")
-    private ResponseEntity<ProdutoResponse> obterPorCodgo(@PathVariable String id){
+    private ResponseEntity<Optional<ProdutoResponse>> obterPorCodgo(@PathVariable String id){
         Optional<ProdutoDto> optional = service.obterProdutoPorCodgo(id);
         if(optional.isPresent()){
-            ProdutoResponse retorno = mapper.map(optional.get(), ProdutoResponse.class);
+            Optional<ProdutoResponse> retorno = Optional.of(mapper.map(optional.get(), ProdutoResponse.class));
             return new ResponseEntity<>(retorno,HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/codgo/{codgo}")
-    private ResponseEntity<String> obterIdPorCodgo(@PathVariable String codgo){
+    private ResponseEntity<Optional<String>> obterIdPorCodgo(@PathVariable String codgo){
         Optional<ProdutoDto> optional = service.obterProdutoPorCodgo(codgo);
         if(optional.isPresent()){
-            return new ResponseEntity<>(optional.get().getId(),HttpStatus.OK);
+            return new ResponseEntity<>(Optional.of(optional.get().getId()),HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(Optional.empty() ,HttpStatus.NOT_FOUND);
     }
 }

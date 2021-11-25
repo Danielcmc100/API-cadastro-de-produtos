@@ -1,11 +1,13 @@
 package com.tech4me.vendaprodutosms.view.model;
 
+import java.time.LocalDate;
+
 import com.tech4me.vendaprodutosms.shared.Produto;
 
 public class VendaResponse {
     private Produto produto;
     private int quantidade;
-    private String data;
+    private LocalDate data;
 
     public Produto getProduto() {
         return produto;
@@ -19,10 +21,10 @@ public class VendaResponse {
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
-    public String getData() {
+    public LocalDate getData() {
         return data;
     }
-    public void setData(String data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 }

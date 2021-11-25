@@ -1,5 +1,7 @@
 package com.tech4me.vendaprodutosms.model;
 
+import java.time.LocalDate;
+
 import com.tech4me.vendaprodutosms.shared.Produto;
 
 import org.springframework.data.annotation.Id;
@@ -11,7 +13,7 @@ public class Venda {
     private String id;
     private Produto produto;
     private int quantidade;
-    private String data;
+    private LocalDate data;
     
     public String getId() {
         return id;
@@ -25,10 +27,10 @@ public class Venda {
     public void setProduto(Produto produto) {
         this.produto = produto;
     }
-    public String getData() {
+    public LocalDate getData() {
         return data;
     }
-    public void setData(String data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
     public int getQuantidade() {
