@@ -13,7 +13,6 @@ public class ProdutoRequest {
     private String nome;
     @Positive(message = "O preço dever ser maior que zero")
     private float preco;
-    @Positive(message = "A quantidade dever ser maior que zero")
     private int quantidade;
 
     public String getNome() {

@@ -47,13 +47,15 @@ public class ProdutoController {
     //Incluir produto
     @PostMapping
     private ResponseEntity<ProdutoResponse> criarProduto(@RequestBody @Valid ProdutoRequest produtoRequest){
+        if(service.obterProdutoPorCodgo(produtoRequest.getCodgo()).isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
         ProdutoDto produtoDto = mapper.map(produtoRequest, ProdutoDto.class);
         produtoDto = service.adicionarMuica(produtoDto);
         ProdutoResponse produtoResponse = mapper.map(produtoDto, ProdutoResponse.class);
         return new ResponseEntity<>(produtoResponse,HttpStatus.ACCEPTED);
     }
-
-    //Consultar produto
+    
     @DeleteMapping(value="/{id}")
     private ResponseEntity<String> removerProduto(@PathVariable String id){
         service.removerProduto(id);
@@ -68,6 +70,7 @@ public class ProdutoController {
         return new ResponseEntity<>(produtoResponse,HttpStatus.OK);
     }
     
+    //Consultar produto
     @GetMapping("/{id}")
     private ResponseEntity<Optional<ProdutoResponse>> obterPorCodgo(@PathVariable String id){
         Optional<ProdutoDto> optional = service.obterProdutoPorCodgo(id);

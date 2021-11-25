@@ -45,7 +45,7 @@ public class ProdutoServiceImpl implements ProdutoService{
     @Override
     public ProdutoDto alterarProduto(String id, ProdutoDto produtoDto) {
         Produto produto = mapper.map(produtoDto, Produto.class);
-        produto.setCodgo(id);
+        produto.setId(id);
         repository.save(produto);
         produtoDto = mapper.map(produto, ProdutoDto.class);
         return produtoDto;
